@@ -31,9 +31,11 @@ router.post('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
 	const { id } = req.params
-	Post.findOne({ _id: id }).then((result) => {
-		res.json(result)
-	})
+	Post.findOne({ _id: id })
+		.then((result) => {
+			res.json(result)
+		})
+		.catch((e) => res.send(e.message))
 })
 
 module.exports = router

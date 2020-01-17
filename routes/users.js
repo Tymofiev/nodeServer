@@ -27,26 +27,34 @@ router.post('/:id/addPost', (req, res) => {
 	const { id } = req.params
 	const { postId } = req.body
 
-	User.updateOne({ _id: id }, { $push: { posts: { _id: postId } } })
-		.then((result) => {
-			res.send(result)
-		})
-		.catch((e) => {
-			res.send(e.message)
-		})
+	if (postId) {
+		User.updateOne({ _id: id }, { $push: { posts: { _id: postId } } })
+			.then((result) => {
+				res.send(result)
+			})
+			.catch((e) => {
+				res.send(e.message)
+			})
+	} else {
+		res.status(404).send('Post id wasnt specified')
+	}
 })
 
 router.post('/:id/deletePost', (req, res) => {
 	const { id } = req.params
 	const { postId } = req.body
 
-	User.updateOne({ _id: id }, { $pull: { posts: { _id: postId } } })
-		.then((result) => {
-			res.send(result)
-		})
-		.catch((e) => {
-			res.send(e.message)
-		})
+	if (postId) {
+		User.updateOne({ _id: id }, { $pull: { posts: { _id: postId } } })
+			.then((result) => {
+				res.send(result)
+			})
+			.catch((e) => {
+				res.send(e.message)
+			})
+	} else {
+		res.status(404).send('Post id wasnt specified')
+	}
 })
 
 router.post('/login', (req, res) => {
