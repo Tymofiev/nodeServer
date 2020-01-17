@@ -3,15 +3,12 @@ const mongoose = require('mongoose')
 
 const connection = config.get('db')
 
-mongoose.connect(connection, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-})
+mongoose
+	.connect(connection, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then((result) => console.log('Connected'))
+	.catch((e) => console.log(e.reason))
 
-let db = mongoose.connection
-
-db.once('open', () => {
-	console.log('Connected')
-})
-
-module.exports = db
+module.exports = mongoose.connection

@@ -1,8 +1,5 @@
 const express = require('express')
-const client = require('../client')
-const mongoose = require('mongoose')
 const User = require('../models/User')
-
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -12,12 +9,38 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-	const { login, password } = req.body
+	const { login, password, posts } = req.body
 
-	let user = new User({ login: login, password: password })
+	let user = new User({ login: login, password: password, posts: posts })
 
 	user
 		.save()
+		.then((result) => {
+			res.send(result)
+		})
+		.catch((e) => {
+			res.send(e.message)
+		})
+})
+
+router.post('/:id/addPost', (req, res) => {
+	const { id } = req.params
+	const { postId } = req.body
+
+	User.updateOne({ _id: id }, { $push: { posts: { _id: postId } } })
+		.then((result) => {
+			res.send(result)
+		})
+		.catch((e) => {
+			res.send(e.message)
+		})
+})
+
+router.post('/:id/deletePost', (req, res) => {
+	const { id } = req.params
+	const { postId } = req.body
+
+	User.updateOne({ _id: id }, { $pull: { posts: { _id: postId } } })
 		.then((result) => {
 			res.send(result)
 		})

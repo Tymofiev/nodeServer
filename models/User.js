@@ -10,6 +10,13 @@ let UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		posts: [
+			{
+				_id: {
+					type: mongoose.Schema.Types.ObjectId,
+				},
+			},
+		],
 	},
 	{ collection: 'users' },
 )
