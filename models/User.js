@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+//SPECIFYING USER SCHEMA
 let UserSchema = new mongoose.Schema(
 	{
 		login: {
@@ -21,4 +22,5 @@ let UserSchema = new mongoose.Schema(
 	{ collection: 'users' },
 )
 
+//EXPORTING SCHEMA
 module.exports = mongoose.model('User', UserSchema)
