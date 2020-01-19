@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 
 //IMPORTING ALL REQUIRED FILES
@@ -8,14 +9,15 @@ const postsRoute = require('./routes/posts')
 const app = express()
 
 //ALLOW ALL METHODS(DOESNT WORK WITHOUT IT, IDK)
-app.use((req, res, next) => {
-	res.set({
-		'Access-Control-Allow-Origin': '*',
-		'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-		'Access-Control-Allow-Headers': 'Content-Type',
-	})
-	next()
-})
+// app.use((req, res, next) => {
+// 	res.set({
+// 		'Access-Control-Allow-Origin': '*',
+// 		'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+// 		'Access-Control-Allow-Headers': 'Content-Type',
+// 	})
+// 	next()
+// })
+//app.use(cors())
 
 app.use(bodyParser.json())
 
