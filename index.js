@@ -1,35 +1,29 @@
 const express = require('express')
+const passport = require('passport')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-//IMPORTING ALL REQUIRED FILES
 const db = require('../server/src/lib/db')
-const usersRoute = require('./routes/users')
-const postsRoute = require('./routes/posts')
+const routes = require('./routes/index')
 const app = express()
 
-//ALLOW ALL METHODS(DOESNT WORK WITHOUT IT, IDK)
-// app.use((req, res, next) => {
-// 	res.set({
-// 		'Access-Control-Allow-Origin': '*',
-// 		'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-// 		'Access-Control-Allow-Headers': 'Content-Type',
-// 	})
-// 	next()
-// })
-//app.use(cors())
-
+app.use(cors())
 app.use(bodyParser.json())
+app.use(passport.initialize())
+app.use(passport.session())
 
-//TELLING WHERE TO GO IN /USERS AND /POSTS CASES
-//USING ROUTES FROM ANOTHER FILES
+const commonRoute = require('./routes/common')
+const usersRoute = require('./routes/users')
+const postsRoute = require('./routes/posts')
+const apiRoute = require('./routes/api')
+
+app.use('/', commonRoute)
+app.use('/api', apiRoute)
 app.use('/users', usersRoute)
 app.use('/posts', postsRoute)
 
-//JUST HOME, THERE IS NO PLACE LIKE HOME
-app.get('/', (req, res) => {
-	res.send('Home page')
-})
-
-//WHAT PORT TO USE
 app.listen(3001, console.log('Listening on port 3001...'))
+
+process.on('unhandledRejection', (error) => {
+	console.log(error)
+})

@@ -1,5 +1,7 @@
 const express = require('express')
 const User = require('../models/User')
+const CryptoJS = require('crypto-js')
+
 const router = express.Router()
 
 //GET ALL USERS AND USER BY ID
@@ -19,10 +21,11 @@ router.get('/:id', (req, res) => {
 //REGISTER AND LOGIN
 router.post('/register', (req, res) => {
 	const { login, password, posts } = req.body
-
 	User.findOne({ login: login }).then((result) => {
 		if (!result) {
-			let user = new User({ login: login, password: password, posts: posts })
+			let encPass = CryptoJS.AES.encrypt(password, '123')
+
+			let user = new User({ login: login, password: encPass, posts: posts })
 
 			user
 				.save()
@@ -35,18 +38,6 @@ router.post('/register', (req, res) => {
 		} else {
 			res.send(true)
 		}
-	})
-})
-
-router.post('/login', (req, res) => {
-	let { login, password } = req.body
-	let exists = false
-
-	User.findOne({ login, password }).then((result) => {
-		if (result) {
-			exists = true
-		}
-		res.send(exists)
 	})
 })
 

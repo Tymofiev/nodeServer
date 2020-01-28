@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const CryptoJS = require('crypto-js')
 
 //SPECIFYING USER SCHEMA
 let UserSchema = new mongoose.Schema(
@@ -21,6 +22,10 @@ let UserSchema = new mongoose.Schema(
 	},
 	{ collection: 'users' },
 )
+
+UserSchema.methods.validPassword = () => {
+	return true
+}
 
 //EXPORTING SCHEMA
 module.exports = mongoose.model('User', UserSchema)
